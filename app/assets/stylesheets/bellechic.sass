@@ -1,0 +1,112 @@
+@import "bootstrap"
+$white: #fff
+$lt-brown: #534137
+$dk-brown: #554b42
+
+body
+  font-family: Georgia, serif
+  color: $dk-brown
+
+.input-with-button
+  margin-left: 15px
+  button, input
+    height: 45px !important
+  button[type=submit]
+    color: $dk-brown
+
+.call-to-action
+  color: $dk-brown
+  &:focus
+    outline: 0 !important
+  @extend .btn
+  @extend .btn-default
+  @extend .btn-lg
+
+.thanks-container
+  text-align: center
+
+.logo
+  @extend .row
+  margin-top: 30px
+  text-align: center
+
+.get-to-know
+  text-align: center
+  margin-top: 30px
+  border-top: 1px dashed $lt-brown
+  border-bottom: 1px dashed $lt-brown
+  font-size: 24px
+  padding-top: 5px
+  padding-bottom: 5px
+
+.subtitle
+  text-align: center
+  margin-top: 20px
+  font-size: 16px
+
+.loading
+  @extend .subtitle
+
+.bellechic-progress
+  .progress
+    margin: 20px 5%
+    height: 25px
+    margin-top: 25px
+    .progress-bar
+      background-color: $lt-brown
+      line-height: 2
+
+.list-group-item
+  border: none
+
+.questions
+  img
+    @extend .img-responsive
+
+  .question
+    font-size: 24px
+    font-weight: bold
+    margin-bottom: .8em
+
+  .image-choice
+    button
+      border: 0
+      margin: 0
+      padding: 0
+    @extend .col-sm-4
+
+    img
+      border: 5px solid $white
+      &:hover
+        border: 5px solid $lt-brown
+    margin-bottom: 1em
+
+.button-choices
+  li
+    display: inline
+    list-style-type: none
+    padding-right: 20px
+
+form
+  input[type=submit]
+    @extend .btn
+    @extend .btn-default
+    @extend .btn-lg
+    color: $dk-brown
+form
+  input[type=text]
+    @extend .form-control
+
+.text-answer
+  div
+    @extend .input-group
+  .input-group
+    width: 68%
+
+  span
+    @extend .input-group-btn
+  button
+    @extend .btn
+    @extend .btn-default
+  input[type=text]
+    @extend .form-control

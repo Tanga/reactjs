@@ -41,7 +41,7 @@
   items: -> @props.todos.map (t) =>
     TodoItem(update: @props.update, item: t)
   render: ->
-    `<ul className='list-unstyled'>{this.items()}</ul>`
+    `<div>{this.items()}</div>`
 
 @TodoItem = React.createClass
   getInitialState: -> {showEdit: false}
@@ -51,16 +51,22 @@
       @props.update(this.props.item, newValue)
       @toggleEdit()
   editForm: ->
-    `<div className='todo-line'>
+    `<div>
       <TodoEntry label="Edit" handleEntry={this.update} todo={this.props.item} />
       <a className='btn' onClick={this.toggleEdit}>Cancel</a>
     </div>`
   render: ->
-    `<li>
-       <a className='btn' onClick={this.remove}>X</a>
-       <a className='btn' onClick={this.toggleEdit}>Edit</a>
-       {this.state.showEdit ? this.editForm() : this.props.item }
-     </li>`
+    `<div className='row todo-line'>
+       <div className='col-xs-4 col-sm-2 col-md-2'>
+         <div className='btn-group'>
+           <a className='btn btn-default' onClick={this.remove}>X</a>
+           <a className='btn btn-default' onClick={this.toggleEdit}>Edit</a>
+         </div>
+       </div>
+       <div className='col-xs-8 col-sm-10'>
+         {this.state.showEdit ? this.editForm() : this.props.item }
+       </div>
+     </div>`
 
 @TodoEntry = React.createClass
   getInitialState: -> {todo: @props.todo}
@@ -70,7 +76,7 @@
     @props.handleEntry(@state.todo)
     @setState(todo: '')
   render: ->
-    `<form className='todo-line' onSubmit={this.handleEntry}>
+    `<form onSubmit={this.handleEntry}>
        <input required valueLink={this.linkState('todo')} autoFocus />
        {this.props.children}
      </form>`

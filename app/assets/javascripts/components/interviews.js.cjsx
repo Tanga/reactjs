@@ -25,9 +25,9 @@
 
   render: ->
     if @state.loading
-      `<div>Loading...</div>`
+      <div>Loading...</div>
     else
-      `<div>
+      <div>
          <div className='logo'><img src='/bellechic-logo.png' /></div>
          <div className='get-to-know'> Let's get to know each other better</div>
          <div className='question-container'>
@@ -36,7 +36,7 @@
              <Question answers={this.state.answers} finished={this.finished()} onAnswer={this.onAnswer} question={this.question()} />
            </div>
          </div>
-       </div>`
+       </div>
 
 ProgressBar = React.createClass
   percent: -> Math.round((this.props.progress / this.props.total) * 100)
@@ -44,27 +44,27 @@ ProgressBar = React.createClass
   text: -> "#{@percentDescription()} Complete" if @percent() > 0
   width: -> {width: @percentDescription()}
   render: ->
-    `<div className='bellechic-progress'>
+    <div className='bellechic-progress'>
         <div className="progress">
           <div className="progress-bar" role="progressbar" style={this.width()}>
             <span>{this.text()}</span>
           </div>
         </div>
-      </div>`
+      </div>
 
 Question = React.createClass
   questionView: ->
-    `<div className='question'>
+    <div className='question'>
        <div className='question-text'>{this.props.question.question_text}</div>
        <Choices onAnswer={this.props.onAnswer} question={this.props.question} />
-     </div>`
+     </div>
   finishedView: ->
-    `<div className='question'>
+    <div className='question'>
        <h4>Thanks Dude</h4>
        <p> Your Answers: </p>
        <pre>{JSON.stringify(this.props.answers)}</pre>
      </div>
-    `
+    
   render: -> if @props.finished then @finishedView() else @questionView()
 
 Choices = React.createClass
@@ -79,7 +79,7 @@ Choices = React.createClass
       when 'text-answer'
         TextAnswer(onAnswer: @props.onAnswer, question: @props.question)
 
-  render: -> `<div className='questions'>{this.component()}</div>`
+  render: -> <div className='questions'>{this.component()}</div>
 
 TextAnswer = React.createClass
   getInitialState: -> {answer: ''}
@@ -88,15 +88,15 @@ TextAnswer = React.createClass
     e.preventDefault() # meh
     this.props.onAnswer(@state.answer)
   render: ->
-    `<form className='text-answer' onSubmit={this.onAnswer}>
+    <form className='text-answer' onSubmit={this.onAnswer}>
        <input valueLink={this.linkState('answer')} autoFocus required />
-     </form>`
+     </form>
 
 ButtonChoice = React.createClass
   onAnswer: ->
     this.props.onAnswer(this.props.choice)
   render: ->
-    `<div className='button'><a className='btn btn-default' onClick={this.onAnswer}>{this.props.choice.value}</a></div>`
+    <div className='button'><a className='btn btn-default' onClick={this.onAnswer}>{this.props.choice.value}</a></div>
 
 ImageChoice = React.createClass
   onAnswer: ->
@@ -111,6 +111,6 @@ ImageChoice = React.createClass
        "https://scontent-sea.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/1146573_10151813062782938_1337287877_n.jpg?oh=200ecb05ecfc27d1f7e79fb39b7c71ac&oe=5556B964"]
      images[Math.floor(Math.random()*images.length)]
   render: ->
-    `<div className='image-choice'>
+    <div className='image-choice'>
        <img onClick={this.onAnswer} src={this.url()} />
-     </div>`
+    </div>

@@ -12,6 +12,7 @@ gem 'puma'
 gem 'react-rails', github: 'reactjs/react-rails'
 gem 'bootstrap-sass'
 gem 'haml'
+gem 'sprockets-coffee-react'
 
 group :development, :test do
   gem 'byebug'

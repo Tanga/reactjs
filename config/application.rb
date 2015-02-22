@@ -8,5 +8,6 @@ Bundler.require(*Rails.groups)
 module Reactjs
   class Application < Rails::Application
     config.react.variant = :development
+    config.react.addons = true
   end
 end

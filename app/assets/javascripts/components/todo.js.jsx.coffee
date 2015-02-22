@@ -76,6 +76,6 @@
     @setState(todo: '')
   render: ->
     `<form className='todo-entry' onSubmit={this.handleEntry}>
-       <input onBlur={this.handleEntry} required valueLink={this.linkState('todo')} autoFocus />
+       <input required valueLink={this.linkState('todo')} autoFocus />
        {this.props.children}
      </form>`

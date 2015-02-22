@@ -25,16 +25,16 @@
 
   render: ->
     if @state.loading
-      `<h1>Loading...</h1>`
+      `<InterviewTitle title="Loading..." />`
     else
       `<div>
-         <InterviewTitle />
+         <InterviewTitle title="Bellechic Questions"/>
          <ProgressBar progress={this.currentIndex()} total={this.questionCount()} />
          <Question finished={this.finished()} onAnswer={this.onAnswer} question={this.question()} />
        </div>`
 
 InterviewTitle = React.createClass
-  render: -> `<h1 className='row'>Bellechic Questions Stuff</h1>`
+  render: -> `<div className='row alert alert-info'><strong>{this.props.title}</strong></div>`
 
 ProgressBar = React.createClass
   percent: -> Math.round((this.props.progress / this.props.total) * 100)
@@ -42,8 +42,8 @@ ProgressBar = React.createClass
   text: -> "#{@percentDescription()} Complete" if @percent() > 0
   width: -> {width: @percentDescription()}
   render: ->
-    `<div className='row'>
-        <h3>{this.props.progress} of {this.props.total} questions answered</h3>
+    `<div className='row col-md-12'>
+        <p >{this.props.progress} of {this.props.total} questions answered</p>
         <div className="progress">
           <div className="progress-bar" role="progressbar" style={this.width()}>
             <span>{this.text()}</span>
@@ -53,8 +53,8 @@ ProgressBar = React.createClass
 
 Question = React.createClass
   questionView: ->
-    `<div>
-       <h2>Question: {this.props.question.question_text} </h2>
+    `<div class='row'>
+       <h3>{this.props.question.question_text} </h3>
        <Choices onAnswer={this.props.onAnswer} question={this.props.question} />
      </div>`
   finishedView: -> `<h2>Thanks Dude</h2>`
@@ -79,6 +79,6 @@ ImageChoice = React.createClass
        "https://scontent-sea.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/1146573_10151813062782938_1337287877_n.jpg?oh=200ecb05ecfc27d1f7e79fb39b7c71ac&oe=5556B964"]
      images[Math.floor(Math.random()*images.length)]
   render: ->
-    `<div className='col-md-4'>
+    `<div className='col-xs-4 col-md-4'>
       <img onClick={this.onAnswer} src={this.url()} width='100%' height='100%' />
      </div>`

@@ -15,7 +15,6 @@
     @setState(currentIndex: @state.currentIndex + 1)
 
   componentDidMount: ->
-    # On the client, let's fetch some questions and make them todo's.
     setTimeout((=> # Artificial timeout
       $.get 'https://api.tanga.com/personalizer/v1/interviews?interview_id=2&session_id=1', (interview) =>
         console.log interview
@@ -34,7 +33,7 @@
        </div>`
 
 InterviewTitle = React.createClass
-  render: -> `<div className='row alert alert-info'><strong>{this.props.title}</strong></div>`
+  render: -> `<div className='question-title'><strong>{this.props.title}</strong></div>`
 
 ProgressBar = React.createClass
   percent: -> Math.round((this.props.progress / this.props.total) * 100)
@@ -42,29 +41,29 @@ ProgressBar = React.createClass
   text: -> "#{@percentDescription()} Complete" if @percent() > 0
   width: -> {width: @percentDescription()}
   render: ->
-    `<div className='row col-md-12'>
-        <p >{this.props.progress} of {this.props.total} questions answered</p>
+    `<div className='question-progress-bar'>
+        <p className='summary'>{this.props.progress} of {this.props.total} questions answered</p>
         <div className="progress">
           <div className="progress-bar" role="progressbar" style={this.width()}>
             <span>{this.text()}</span>
           </div>
         </div>
-      </div> `
+      </div>`
 
 Question = React.createClass
   questionView: ->
-    `<div class='row'>
-       <h3>{this.props.question.question_text} </h3>
+    `<div className='question'>
+       <h3>{this.props.question.question_text}</h3>
        <Choices onAnswer={this.props.onAnswer} question={this.props.question} />
      </div>`
-  finishedView: -> `<h2>Thanks Dude</h2>`
+  finishedView: -> `<div className='question'><h3>Thanks Dude</h3></div>`
   render: -> if @props.finished then @finishedView() else @questionView()
 
 Choices = React.createClass
   choices: ->
     @props.question.choices.map (choice) =>
       ImageChoice(onAnswer: @props.onAnswer, choice: choice)
-  render: -> `<div className='row'>{this.choices()}</div>`
+  render: -> `<div className='question-choices'>{this.choices()}</div>`
 
 ImageChoice = React.createClass
   onAnswer: ->
@@ -79,6 +78,6 @@ ImageChoice = React.createClass
        "https://scontent-sea.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/1146573_10151813062782938_1337287877_n.jpg?oh=200ecb05ecfc27d1f7e79fb39b7c71ac&oe=5556B964"]
      images[Math.floor(Math.random()*images.length)]
   render: ->
-    `<div className='col-xs-4 col-md-4'>
-      <img onClick={this.onAnswer} src={this.url()} width='100%' height='100%' />
+    `<div className='images'>
+       <img onClick={this.onAnswer} src={this.url()} />
      </div>`

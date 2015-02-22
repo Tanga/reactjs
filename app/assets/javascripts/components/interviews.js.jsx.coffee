@@ -28,7 +28,7 @@
       `<div>Loading...</div>`
     else
       `<div>
-         <div className='logo'><img src='/assets/bellechic-logo.png' /></div>
+         <div className='logo'><img src='/bellechic-logo.png' /></div>
          <div className='get-to-know'> Let's get to know each other better</div>
          <div className='question-container'>
            <ProgressBar progress={this.currentIndex()} total={this.questionCount()} />

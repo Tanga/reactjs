@@ -53,10 +53,10 @@ ProgressBar = React.createClass
 Question = React.createClass
   questionView: ->
     `<div className='question'>
-       <h3>{this.props.question.question_text}</h3>
+       <h4>{this.props.question.question_text}</h4>
        <Choices onAnswer={this.props.onAnswer} question={this.props.question} />
      </div>`
-  finishedView: -> `<div className='question'><h3>Thanks Dude</h3></div>`
+  finishedView: -> `<div className='question'><h4>Thanks Dude</h4></div>`
   render: -> if @props.finished then @finishedView() else @questionView()
 
 Choices = React.createClass

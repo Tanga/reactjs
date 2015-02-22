@@ -2,7 +2,8 @@
   getInitialState: ->
     loading: true
     interview: {questions: []}
-    currentIndex: 0
+    currentIndex: 0,
+    answers: []
 
   question:      -> @state.interview.questions[@state.currentIndex]
   questionCount: -> @state.interview.questions.length
@@ -10,15 +11,15 @@
   finished:      -> @currentIndex() >= @questionCount()
 
   onAnswer: (choice) ->
-    console.log "Answered:"
-    console.log choice
+    @setState(answers: @state.answers.concat(choice))
     @setState(currentIndex: @state.currentIndex + 1)
+    console.log "You answered " + JSON.stringify(choice)
 
   componentDidMount: ->
     setTimeout((=> # Artificial timeout
       $.get 'https://api.tanga.com/personalizer/v1/interviews?interview_id=2&session_id=1', (interview) =>
         console.log interview
-        interview.questions = interview.questions.splice(0, 3) # limit during testing
+        interview.questions = interview.questions.splice(14, 20) # limit during testing
         @setState(interview: interview, loading: false)
     ), 500)
 
@@ -29,7 +30,7 @@
       `<div>
          <InterviewTitle title="Bellechic Questions"/>
          <ProgressBar progress={this.currentIndex()} total={this.questionCount()} />
-         <Question finished={this.finished()} onAnswer={this.onAnswer} question={this.question()} />
+         <Question answers={this.state.answers} finished={this.finished()} onAnswer={this.onAnswer} question={this.question()} />
        </div>`
 
 InterviewTitle = React.createClass
@@ -56,14 +57,46 @@ Question = React.createClass
        <h4>{this.props.question.question_text}</h4>
        <Choices onAnswer={this.props.onAnswer} question={this.props.question} />
      </div>`
-  finishedView: -> `<div className='question'><h4>Thanks Dude</h4></div>`
+  finishedView: ->
+    `<div className='question'>
+       <h4>Thanks Dude</h4>
+       <p> Your Answers: </p>
+       <pre>{JSON.stringify(this.props.answers)}</pre>
+     </div>
+    `
   render: -> if @props.finished then @finishedView() else @questionView()
 
 Choices = React.createClass
-  choices: ->
-    @props.question.choices.map (choice) =>
-      ImageChoice(onAnswer: @props.onAnswer, choice: choice)
-  render: -> `<div className='question-choices'>{this.choices()}</div>`
+  component: ->
+    switch(@props.question.type)
+      when 'button-choices'
+        @props.question.choices.map (choice) =>
+          ButtonChoice(onAnswer: @props.onAnswer, choice: choice)
+      when 'image-choice'
+        @props.question.choices.map (choice) =>
+          ImageChoice(onAnswer: @props.onAnswer, choice: choice)
+      when 'text-answer'
+        TextAnswer(onAnswer: @props.onAnswer, question: @props.question)
+
+  render: -> `<div className='question-choices'>{this.component()}</div>`
+
+TextAnswer = React.createClass
+  getInitialState: -> {answer: ''}
+  mixins: [React.addons.LinkedStateMixin] # For 2 way data binding
+  onAnswer: (e) ->
+    e.preventDefault() # meh
+    this.props.onAnswer(@state.answer)
+  render: ->
+    `<form className='text-answer' onSubmit={this.onAnswer}>
+       <label>{this.props.question.question_text}</label>
+       <input valueLink={this.linkState('answer')} autoFocus required />
+     </form>`
+
+ButtonChoice = React.createClass
+  onAnswer: ->
+    this.props.onAnswer(this.props.choice)
+  render: ->
+    `<div className='button'><a className='btn btn-default' onClick={this.onAnswer}>{this.props.choice.value}</a></div>`
 
 ImageChoice = React.createClass
   onAnswer: ->

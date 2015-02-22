@@ -25,11 +25,11 @@
       @setState(todos: t)
 
   render: ->
-    `<div>
+    `<div className='todo'>
        <TodoSummary todos={this.state.todos} />
        <TodoList todos={this.state.todos} update={this.handleUpdate} />
-       <TodoEntry handleEntry={this.handleAddNew} label="Add New TODO">
-         <button>Add New</button>
+       <TodoEntry handleEntry={this.handleAddNew}>
+         <button>Add</button>
        </TodoEntry>
      </div>`
 
@@ -52,19 +52,18 @@
       @toggleEdit()
   editForm: ->
     `<div>
-      <TodoEntry label="Edit" handleEntry={this.update} todo={this.props.item} />
-      <a className='btn' onClick={this.toggleEdit}>Cancel</a>
+      <TodoEntry handleEntry={this.update} todo={this.props.item} />
+      <a className='cancel' onClick={this.toggleEdit}>Cancel</a>
     </div>`
+  displayItem: -> `<div className='item'>{this.props.item}</div>`
   render: ->
-    `<div className='row todo-line'>
-       <div className='col-xs-4 col-sm-2 col-md-2'>
-         <div className='btn-group'>
-           <a className='btn btn-default' onClick={this.remove}>X</a>
-           <a className='btn btn-default' onClick={this.toggleEdit}>Edit</a>
-         </div>
+    `<div className='todo-line'>
+       <div className='edit-buttons'>
+         <a onClick={this.remove}>X</a>
+         <a onClick={this.toggleEdit}>Edit</a>
        </div>
-       <div className='col-xs-8 col-sm-10'>
-         {this.state.showEdit ? this.editForm() : this.props.item }
+       <div className='todo-display'>
+         {this.state.showEdit ? this.editForm() : this.displayItem() }
        </div>
      </div>`
 
@@ -76,7 +75,7 @@
     @props.handleEntry(@state.todo)
     @setState(todo: '')
   render: ->
-    `<form onSubmit={this.handleEntry}>
+    `<form className='todo-entry' onSubmit={this.handleEntry}>
        <input required valueLink={this.linkState('todo')} autoFocus />
        {this.props.children}
      </form>`

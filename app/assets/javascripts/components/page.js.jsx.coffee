@@ -3,4 +3,5 @@
     `<div>
       <Title />
       <HelloWorld name='Joe' />
+      <Todo />
     </div>`
